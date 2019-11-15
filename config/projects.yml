@@ -430,7 +430,7 @@ wpt:
     ci:
       type: standard_gcp_docker_worker
       privileged: true
-      maxCapacity: 40
+      maxCapacity: 80
   repos:
     - github.com/web-platform-tests/*
   grants:
@@ -455,69 +455,7 @@ relman:
     - github.com/mozilla/code-review:*
     - github.com/mozilla/rust-code-analysis:*
     - github.com/mozilla/dump_syms:*
-    - github.com/mozilla/libmozevent:*
-  workerPools:
-    ci:
-      owner: mcastelluccio@mozilla.com
-      emailOnError: false
-      type: standard_gcp_docker_worker
-      minCapacity: 1
-      maxCapacity: 50
-      privileged: true
-    compute-small:
-      owner: mcastelluccio@mozilla.com
-      emailOnError: false
-      type: standard_gcp_docker_worker
-      minCapacity: 1
-      maxCapacity: 25
-      machineType: "zones/{zone}/machineTypes/n1-standard-4"
-    compute-large:
-      owner: mcastelluccio@mozilla.com
-      emailOnError: false
-      type: standard_gcp_docker_worker
-      minCapacity: 1
-      maxCapacity: 25
-      machineType: "zones/{zone}/machineTypes/n1-standard-8"
-  secrets:
-    bugbug/deploy: true
-    bugbug/integration: true
-    bugbug/production: true
-    bugbug/testing: true
-    bugzilla-dashboard-backend/deploy-production: true
-    bugzilla-dashboard-backend/deploy-testing: true
-    code-coverage/deploy-production: true
-    code-coverage/deploy-testing: true
-    code-coverage/dev: true
-    code-review/deploy-dev: true
-    code-review/deploy-production: true
-    code-review/deploy-testing: true
-    microannotate/deploy: true
-    taskboot/deploy: true
-    libmozevent/deploy: true
-  grants:
-    # all repos
-    - grant:
-        - queue:create-task:highest:proj-relman/ci
-        - queue:route:statuses
-      to:
-        - repo:github.com/mozilla/bugbug:*
-        - repo:github.com/mozilla/microannotate:*
-        - repo:github.com/mozilla/task-boot:*
-        - repo:github.com/mozilla/code-coverage:*
-        - repo:github.com/mozilla/code-review:*
-        - repo:github.com/mozilla/rust-code-analysis:*
-        - repo:github.com/mozilla/bugzilla-dashboard-backend:*
-        - repo:github.com/mozilla/dump_syms:*
-        - repo:github.com/mozilla/libmozevent:*
-
-    # all hooks
-    - grant:
-        - queue:scheduler-id:-
-        - queue:create-task:highest:proj-relman/*
-      to: hook-id:project-relman/*
-
-    # bugzilla-dashboard-backend
-    - grant: docker-worker:capability:privileged
+TaskCr:capability:privileged
       to: repo:github.com/mozilla/bugzilla-dashboard-backend:*
     - grant: secrets:get:project/relman/bugzilla-dashboard-backend/deploy-production
       to: repo:github.com/mozilla/bugzilla-dashboard-backend:branch:production
